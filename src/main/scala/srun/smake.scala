@@ -17,12 +17,12 @@ object Smake {
   }
 
   case class Job(tasks: Seq[Task]) {
-    val nameMap: Map[String, Task] =
+    val nameMap: Map[TaskName, Task] =
       tasks.flatMap(t => t.name.map(_ -> t)).toMap
     val targetMap: Map[Target, Task] =
       tasks.flatMap(t => t.targets.map(_ -> t)).toMap
     val taskDepGraph: Map[Task, Set[Task]] = tasks
-      .map(t => t -> (t.deps.flatMap(targetMap.get).toSet ++ t.depTasks))
+      .map(t => t -> (t.deps.flatMap(targetMap.get).toSet ++ t.depTasks.map(nameMap)))
       .toMap
     def getRunSeq(task: Task): Seq[Task] = {
       import scala.collection.mutable
@@ -44,7 +44,7 @@ object Smake {
       extend(task)
       runList.toSeq
     }
-    def runByName(name: String): Unit = {
+    def runByName(name: TaskName): Unit = {
       println(s"$toolName: runByName $name")
       nameMap.get(name) match
         case Some(task) => runTaskWithDepTasks(task)
@@ -76,11 +76,12 @@ object Smake {
     def apply(tasks: Task*): Job = Job(tasks)
   }
 
+  type TaskName = String
   case class Task(
-      name: Option[String],
+      name: Option[TaskName],
       targets: Set[Target],
       deps: Set[Target],
-      depTasks: Set[Task],
+      depTasks: Set[TaskName],
       runs: Seq[Run]
   ) {
     require(name.nonEmpty || targets.nonEmpty, "task must have name or targets")
@@ -117,7 +118,7 @@ object Smake {
     }
   }
 
-  class RunTaskByName(name: String) extends Run {
+  class RunTaskByName(name: TaskName) extends Run {
     def run(using job: Job): Unit = {
       job.runByName(name)
     }
