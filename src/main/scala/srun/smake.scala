@@ -64,6 +64,12 @@ object Smake {
     private def runTaskWithDepTasks(task: Task): Unit = {
       getRunSeq(task).foreach(_.run(using this))
     }
+
+    def asMain(args: Array[String]): Unit = {
+      args.headOption match
+        case None       => runTask(tasks.head)
+        case Some(name) => runByName(name)
+    }
   }
   object Job {
     @targetName("applyExpandedTasks")
@@ -116,5 +122,4 @@ object Smake {
       job.runByName(name)
     }
   }
-
 }
