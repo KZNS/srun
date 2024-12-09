@@ -67,7 +67,10 @@ object Smake {
 
     def asMain(args: Array[String]): Unit = {
       args.headOption match
-        case None       => runTask(tasks.head)
+        case None =>
+          tasks.headOption match
+            case Some(task) => runTask(task)
+            case None       => println(s"$toolName: no task to run")
         case Some(name) => runByName(name)
     }
   }
@@ -78,13 +81,12 @@ object Smake {
 
   type TaskName = String
   case class Task(
-      name: Option[TaskName],
-      targets: Set[Target],
-      deps: Set[Target],
-      depTasks: Set[TaskName],
-      runs: Seq[Run]
+      name: Option[TaskName] = None,
+      targets: Set[Target] = Set.empty,
+      deps: Set[Target] = Set.empty,
+      depTasks: Set[TaskName] = Set.empty,
+      runs: Seq[Run] = Seq.empty
   ) {
-    require(name.nonEmpty || targets.nonEmpty, "task must have name or targets")
     lazy val targetsFirstModifiedTime: Long = targets.map(_.lastModifiedTime).minOption.getOrElse(0)
     lazy val depsLastModifiedTime: Long     = deps.map(_.lastModifiedTime).maxOption.getOrElse(0)
 
@@ -96,12 +98,21 @@ object Smake {
         smakePrintln(s"task $this is up-to-date, skipped")
       }
 
+    def setName(name: TaskName): Task       = copy(name = Some(name))
+    def setTargets(paths: String*): Task    = copy(targets = paths.map(Target(_)).toSet)
+    def setDeps(paths: String*): Task       = copy(deps = paths.map(Target(_)).toSet)
+    def setDepTasks(names: TaskName*): Task = copy(depTasks = names.toSet)
+    def setRuns(runs: Run*): Task           = copy(runs = runs.toSeq)
+
     override def toString(): String = name match
       case Some(name) => s"Task($name)"
       case None =>
         if targets.size == 1
         then s"Task(${targets.head})"
         else s"Task(${targets.head}s)"
+  }
+  object Task {
+    def apply(name: TaskName): Task = Task(name = Some(name))
   }
 
   abstract class Run() {

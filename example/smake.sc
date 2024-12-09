@@ -8,21 +8,14 @@
 import srun.Smake.*
 
 Job(
-  Task(
-    None,
-    Set(Target("build/hello.txt")),
-    Set.empty,
-    Set.empty,
-    Seq(
+  Task()
+    .setTargets("build/hello.txt")
+    .setRuns(
       RunCmd("mkdir -p build"),
       RunCmd("echo hello > build/hello.txt")
-    )
-  ),
-  Task(
-    Some("world"),
-    Set(Target("build/world.txt")),
-    Set(Target("build/hello.txt")),
-    Set(),
-    Seq(RunCmd("echo world > build/world.txt"))
-  )
+    ),
+  Task("world")
+    .setTargets("build/world.txt")
+    .setDeps("build/hello.txt")
+    .setRuns(RunCmd("echo world > build/world.txt"))
 ).asMain(args)

@@ -3,6 +3,8 @@
 .metals/
 .scala-build/
 .bloop/
+metals.sbt
+*.scala.semanticdb
 
 build/
 target/
