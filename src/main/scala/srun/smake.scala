@@ -6,7 +6,10 @@ import scala.sys.process._
 object Smake {
   val toolName = "smake"
 
-  def smakePrintln(msg: String): Unit = println(s"$toolName: $msg")
+  def smakePrintln(msg: String): Unit = {
+    import io.AnsiColor._
+    println(s"$CYAN$toolName:$RESET $msg")
+  }
 
   case class Target(path: String) {
     lazy val filePath   = java.nio.file.Paths.get(path)
@@ -45,7 +48,7 @@ object Smake {
       runList.toSeq
     }
     def runByName(name: TaskName): Unit = {
-      println(s"$toolName: runByName $name")
+      smakePrintln(s"runByName $name")
       nameMap.get(name) match
         case Some(task) => runTaskWithDepTasks(task)
         case None       => throw IllegalArgumentException(s"$toolName: task `$name` not found")
