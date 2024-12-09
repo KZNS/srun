@@ -17,5 +17,7 @@ Job(
   Task("world")
     .setTargets("build/world.txt")
     .setDeps("build/hello.txt")
-    .setRuns(RunCmd("echo world > build/world.txt"))
+    .setRuns(
+      WriteFile("world\n", "build/world.txt")
+    )
 ).asMain(args)
