@@ -6,7 +6,7 @@
 // //> using repository jitpack
 // //> using dep "com.github.kzns:srun:f62d4ea"
 
-import srun.Smake.*
+import srun.make._
 
 Job(
   Task()
