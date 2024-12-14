@@ -3,10 +3,10 @@ package srun.make
 case class Job(tasks: Seq[Task]) {
   val nameMap: Map[TaskName, Task] =
     tasks.flatMap(t => t.name.map(_ -> t)).toMap
-  val targetMap: Map[Target, Task] =
-    tasks.flatMap(t => t.targets.map(_ -> t)).toMap
+  val absPathMap: Map[os.Path, Task] =
+    tasks.flatMap(t => t.targets.map(_.absPath -> t)).toMap
   val taskDepGraph: Map[Task, Set[Task]] = tasks
-    .map(t => t -> (t.deps.flatMap(targetMap.get).toSet ++ t.depTasks.map(nameMap)))
+    .map(t => t -> (t.deps.flatMap(t => absPathMap.get(t.absPath)).toSet ++ t.depTasks.map(nameMap)))
     .toMap
   def getRunSeq(task: Task): Seq[Task] = {
     import scala.collection.mutable
@@ -36,7 +36,7 @@ case class Job(tasks: Seq[Task]) {
   }
   def runByTarget(target: Target): Unit = {
     smakePrintln(s"runByTarget $target")
-    targetMap.get(target) match
+    absPathMap.get(target.absPath) match
       case Some(task) => runTaskWithDepTasks(task)
       case None       => throw IllegalArgumentException(s"$toolName: target `${target.path}` not found")
   }

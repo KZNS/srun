@@ -19,6 +19,6 @@ Job(
     .setTargets("build/world.txt")
     .setDeps("build/hello.txt")
     .setRuns(
-      WriteFile("world\n", "build/world.txt")
+      WriteFile("build/world.txt", "world\n")
     )
 ).asMain(args)
