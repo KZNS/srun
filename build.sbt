@@ -8,7 +8,9 @@ lazy val srun = (project in file("."))
     libraryDependencies ++= Seq(
       "com.lihaoyi" %% "requests" % "0.9.0",
       "com.lihaoyi" %% "upickle"  % "4.0.2",
-      "com.lihaoyi" %% "os-lib"   % "0.11.3"
+      "com.lihaoyi" %% "os-lib"   % "0.11.3",
+      // for html
+      "org.jsoup" % "jsoup" % "1.18.3"
     ),
     scalacOptions ++= Seq()
   )
