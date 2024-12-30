@@ -9,6 +9,8 @@ lazy val srun = (project in file("."))
       "com.lihaoyi" %% "requests" % "0.9.0",
       "com.lihaoyi" %% "upickle"  % "4.0.2",
       "com.lihaoyi" %% "os-lib"   % "0.11.3",
+      // graph
+      "org.scala-graph" %% "graph-core" % "2.0.2",
       // for WebString
       "org.jsoup" % "jsoup" % "1.18.3",
       // for Charset.detect

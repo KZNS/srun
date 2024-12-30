@@ -1,32 +1,31 @@
 package srun.make
 
+import scalax.collection.edges._
+import scalax.collection.immutable.Graph
+
 case class Job(tasks: Seq[Task]) {
   val nameMap: Map[TaskName, Task] =
     tasks.flatMap(t => t.name.map(_ -> t)).toMap
   val absPathMap: Map[os.Path, Task] =
     tasks.flatMap(t => t.targets.map(_.absPath -> t)).toMap
-  val taskDepGraph: Map[Task, Set[Task]] = tasks
-    .map(t => t -> (t.deps.flatMap(t => absPathMap.get(t.absPath)).toSet ++ t.depTasks.map(nameMap)))
-    .toMap
+  val taskDepGraph = Graph.from(
+    tasks.flatMap: t =>
+      (
+        t.deps.map(_.absPath).map(absPathMap) ++
+          t.depTasks.map(nameMap)
+      ).map(t ~> _)
+  )
   def getRunSeq(task: Task): Seq[Task] = {
-    import scala.collection.mutable
-    val depCount = mutable.Map(task -> 0)
-    def updateDepCount(t: Task): Unit = {
-      val needExtend = taskDepGraph(t).filterNot(depCount.contains)
-      taskDepGraph(t).foreach(dep => depCount.updateWith(dep)(_.map(_ + 1).orElse(Some(1))))
-      needExtend.foreach(updateDepCount)
+    val depends  = taskDepGraph.get(task).withSubgraph().toSet
+    val subgraph = taskDepGraph.filter(depends.contains)
+
+    subgraph.topologicalSort() match {
+      case Left(failure) =>
+        throw IllegalArgumentException(
+          s"$toolName: cycle detected: ${failure.cycle.get.mkString(" -> ")}"
+        )
+      case Right(sorted) => sorted.toOuter.toSeq.reverse
     }
-    updateDepCount(task)
-    var runList = List.empty[Task]
-    def extend(t: Task): Unit = {
-      runList = t :: runList
-      taskDepGraph(t).foreach { dep =>
-        depCount.updateWith(dep)(_.map(_ - 1).orElse(Some(0)))
-        if (depCount(dep) == 0) extend(dep)
-      }
-    }
-    extend(task)
-    runList.toSeq
   }
   def runByName(name: TaskName): Unit = {
     smakePrintln(s"runByName $name")
