@@ -13,8 +13,8 @@ class RunFunc(func: () => Unit) extends Run {
 class RunCmd(cmd: String) extends Run {
   def run(using Job): Unit = {
     smakePrintln(s"run cmd `$cmd`")
-    val ret = Seq("bash", "-c", cmd).!
-    assert(ret == 0, s"command `$cmd` failed with exit code $ret")
+    os.proc("bash", "-c", cmd)
+      .call(stdin = os.Inherit, stdout = os.Inherit, stderr = os.Inherit)
   }
 }
 
