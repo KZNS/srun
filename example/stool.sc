@@ -13,6 +13,18 @@ val utf8Str = "你好这是一段的文本，但是短了有识别率问题，�
 println(Charset.detect(utf8Str.getBytes("GB2312")))
 println(String(utf8Str.getBytes("GB2312"), "GB18030"))
 
+// CSV
+
+val csvTable = """a,b,c
+1,2,3""".toCSVTable
+assert(csvTable.head(1) == "b")
+
+// DateTime
+
+val dateTime = "2024-12-23 22:24:50".toLocalDateTime("yyyy-MM-dd HH:mm:ss")
+assert(dateTime.getHour() == 22)
+assert(dateTime.toString("yyMMdd-HHmmss") == "241223-222450")
+
 // GitHubRepo
 GitHubRepo("kzns", "srun").downloadFile(".scalafmt.conf", "build/.scalafmt.conf", Some("//"))
 

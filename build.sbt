@@ -14,7 +14,9 @@ lazy val srun = (project in file("."))
       // for WebString
       "org.jsoup" % "jsoup" % "1.18.3",
       // for Charset.detect
-      "org.apache.tika" % "tika-parsers-standard-package" % "3.0.0"
+      "org.apache.tika" % "tika-parsers-standard-package" % "3.0.0",
+      // for CSV
+      "com.github.tototoshi" %% "scala-csv" % "2.0.0"
     ),
     scalacOptions ++= Seq()
   )
