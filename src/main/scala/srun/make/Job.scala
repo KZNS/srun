@@ -48,13 +48,18 @@ case class Job(tasks: Seq[Task]) {
     getRunSeq(task).foreach(_.run(using this))
   }
 
+  def getTaskNames: Seq[TaskName] = nameMap.keys.toSeq
+
   def asMain(args: Array[String]): Unit = {
     args.headOption match
       case None =>
         tasks.headOption match
           case Some(task) => runTask(task)
           case None       => smakePrintln("no task to run")
-      case Some(name) => runByName(name)
+      case Some(name) =>
+        name match
+          case "-l" => println(getTaskNames.mkString("\n"))
+          case _    => runByName(name)
   }
 }
 object Job {

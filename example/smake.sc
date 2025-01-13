@@ -15,7 +15,7 @@ Job(
       RunCmd("mkdir -p build"),
       RunCmd("echo hello > build/hello.txt")
     ),
-  Task("world")
+  "world".asTask
     .setTargets("build/world.txt")
     .setDeps("build/hello.txt")
     .setRuns(

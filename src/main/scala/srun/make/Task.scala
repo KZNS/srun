@@ -3,6 +3,9 @@ package srun.make
 import scala.sys.process._
 
 type TaskName = String
+extension (taskName: TaskName) {
+  def asTask: Task = Task(name = Some(taskName))
+}
 
 case class Task(
     name: Option[TaskName] = None,
