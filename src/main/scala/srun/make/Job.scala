@@ -9,6 +9,7 @@ case class Job(tasks: Seq[Task]) {
   val absPathMap: Map[os.Path, Task] =
     tasks.flatMap(t => t.targets.map(_.absPath -> t)).toMap
   val taskDepGraph = Graph.from(
+    tasks,
     tasks.flatMap: t =>
       (
         t.deps.map(_.absPath).map(absPathMap) ++
