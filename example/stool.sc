@@ -28,6 +28,9 @@ assert(dateTime.toString("yyMMdd-HHmmss") == "241223-222450")
 // GitHubRepo
 GitHubRepo("kzns", "srun").downloadFile(".scalafmt.conf", "build/.scalafmt.conf", Some("//"))
 
+// Path
+println(filesUnder(os.pwd / "src", "scala"))
+
 // WebString
 val filePath =
   "/Downloads/The.Wolf.of.Wall.Street.chs%26amp%3Beng%5B%E7%89%B9%E6%95%88%5D.ass"
