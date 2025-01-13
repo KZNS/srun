@@ -20,5 +20,9 @@ Job(
     .setDeps("build/hello.txt")
     .setRuns(
       WriteFile("build/world.txt", "world\n")
+    ),
+  "write-on-need".asTask
+    .setRuns(
+      WriteFile("build/world.txt", "world\n", onNeed = true)
     )
 ).asMain(args)
