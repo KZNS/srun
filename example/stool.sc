@@ -30,6 +30,7 @@ GitHubRepo("kzns", "srun").downloadFile(".scalafmt.conf", "build/.scalafmt.conf"
 
 // Path
 println(filesUnder(os.pwd / "src", "scala"))
+println(!Seq(os.pwd / "build/world.txt").forallNewerThan(Seq(os.pwd / "build/hello.txt")))
 
 // WebString
 val filePath =
