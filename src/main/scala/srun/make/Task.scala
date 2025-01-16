@@ -14,8 +14,8 @@ case class Task(
     depTasks: Set[TaskName] = Set.empty,
     runs: Seq[Run] = Seq.empty
 ) {
-  lazy val targetsFirstModifiedTime: Long = targets.map(_.lastModifiedTime).minOption.getOrElse(0)
-  lazy val depsLastModifiedTime: Long     = deps.map(_.lastModifiedTime).maxOption.getOrElse(0)
+  def targetsFirstModifiedTime: Long = targets.map(_.lastModifiedTime).minOption.getOrElse(0)
+  def depsLastModifiedTime: Long     = deps.map(_.lastModifiedTime).maxOption.getOrElse(0)
 
   def run(using Job): Unit =
     if (depsLastModifiedTime >= targetsFirstModifiedTime) {
