@@ -8,6 +8,9 @@
 
 import srun.tool._
 
+//Bash
+callBash("echo 2333")
+
 // Charset
 val utf8Str = "你好这是一段的文本，但是短了有识别率问题，暂时保留"
 println(Charset.detect(utf8Str.getBytes("GB2312")))

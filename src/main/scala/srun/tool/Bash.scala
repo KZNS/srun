@@ -6,7 +6,8 @@ object Bash {
   }
 }
 object callBash {
-  def apply(cmd: String) = {
+  def apply(cmd: String, echo: Boolean = true) = {
+    if (echo) println(cmd)
     Bash(cmd).call(stdin = os.Inherit, stdout = os.Inherit, stderr = os.Inherit)
   }
 }
