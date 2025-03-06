@@ -31,6 +31,15 @@ assert(dateTime.toString("yyMMdd-HHmmss") == "241223-222450")
 // GitHubRepo
 GitHubRepo("kzns", "srun").downloadFile(".scalafmt.conf", "build/.scalafmt.conf", Some("//"))
 
+// Parallel
+val nums = scala.collection.parallel.immutable.ParSeq((1 to 5).toList*)
+nums
+  .withLimit(2)
+  .map { i =>
+    Thread.sleep(1000)
+    println(i)
+  }
+
 // Path
 println(filesUnder(os.pwd / "src", "scala"))
 println(!Seq(os.pwd / "build/world.txt").forallNewerThan(Seq(os.pwd / "build/hello.txt")))
