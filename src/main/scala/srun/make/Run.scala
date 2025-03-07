@@ -28,7 +28,7 @@ class WriteFile(path: String, str: String, option: String = "w", onNeed: Boolean
   def runName = "WriteFile"
   def run(using Job): Unit = {
     runPrintln(s"write to file `$path`: \"$str\"")
-    val absPath = srun.tool.ExpandPath(path)
+    val absPath = os.Path(path, os.pwd)
     option match {
       case "w" =>
         if onNeed && (os.exists(absPath) && os.read(absPath) == str)
