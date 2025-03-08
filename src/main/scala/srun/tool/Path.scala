@@ -26,3 +26,13 @@ extension (files: Iterable[os.Path]) {
     files.map(os.mtime).max > others.map(os.mtime).min
   }
 }
+
+extension [T <: os.FilePath](p: T) {
+  def replaceExt(ext: String): T = {
+    require(p.ext.nonEmpty, s"`replaceExt` need a file path with extension: p=$p, maybe you want to use `addExt`")
+    (p / os.up / s"${p.baseName}.$ext").asInstanceOf[T]
+  }
+  def addExt(ext: String): T = {
+    (p / os.up / s"${p.last}.$ext").asInstanceOf[T]
+  }
+}
