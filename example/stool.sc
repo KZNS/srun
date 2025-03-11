@@ -46,6 +46,10 @@ println(!Seq(os.pwd / "build/world.txt").forallNewerThan(Seq(os.pwd / "build/hel
 println((os.SubPath("a") / "b" / "c.txt").replaceExt("out"))
 println(os.pwd.addExt("777"))
 
+// Self
+val data = "2333"
+data.selfCall(println).selfMap(_.toInt + 1).selfCall(println)
+
 // WebString
 val filePath =
   "/Downloads/The.Wolf.of.Wall.Street.chs%26amp%3Beng%5B%E7%89%B9%E6%95%88%5D.ass"
