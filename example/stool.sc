@@ -31,6 +31,11 @@ assert(dateTime.toString("yyMMdd-HHmmss") == "241223-222450")
 // GitHubRepo
 GitHubRepo("kzns", "srun").downloadFile(".scalafmt.conf", "build/.scalafmt.conf", Some("//"))
 
+// Java
+val javaList  = java.util.List.of("2333", "2334", "2335")
+val scalaList = javaList.asScalaAll
+println(scalaList)
+
 // Parallel
 val nums = scala.collection.parallel.immutable.ParSeq((1 to 5).toList*)
 nums
