@@ -28,6 +28,12 @@ val dateTime = "2024-12-23 22:24:50".toLocalDateTime("yyyy-MM-dd HH:mm:ss")
 assert(dateTime.getHour() == 22)
 assert(dateTime.toString("yyMMdd-HHmmss") == "241223-222450")
 
+// FileString
+val bomStr = "\uFEFFHello, World!"
+assert(bomStr.hasBom)
+assert(!bomStr.removedBom.hasBom)
+assert(bomStr.removedBom.addedBom.hasBom)
+
 // GitHubRepo
 GitHubRepo("kzns", "srun").downloadFile(".scalafmt.conf", "build/.scalafmt.conf", Some("//"))
 
