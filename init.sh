@@ -4,4 +4,6 @@ commit_id=$(curl -s https://api.github.com/repos/kzns/srun/branches/main | grep 
 
 echo "#!/usr/bin/env -S scala-cli shebang
 //> using repository jitpack
-//> using dep com.github.kzns:srun:$commit_id"
+//> using dep com.github.kzns:srun:$commit_id
+
+import srun.tool.*"
