@@ -1,10 +1,20 @@
+# IDE and Tools
+## VS Code
 .vscode/
 .bsp/
 .metals/
-.scala-build/
 .bloop/
 metals.sbt
+## scala-cli
+.scala-build/
 *.scala.semanticdb
-
+## Mill
+out/
+## build
 build/
 target/
+
+# System
+.DS_Store
+
+# Project
